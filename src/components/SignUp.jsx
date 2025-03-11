@@ -11,6 +11,7 @@ const SignUp = () => {
   const [usernameErr, setUsernameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [isSigning, setIsSigning] = useState(false);
+  const [otherErr, setOtherErr] = useState("")
 
   const editUsername = (e) => {
     const newname = e.target.value;
@@ -44,6 +45,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setOtherErr("");
 
     if (username.length < 1 || (password.length < 1 && password2.length < 1)) {
       if (username.length < 1) {
@@ -67,6 +69,9 @@ const SignUp = () => {
         }),
       })
         .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to sign up. server error");
+          }
           return res.json();
         })
         .then((data) => {
@@ -80,7 +85,7 @@ const SignUp = () => {
         })
         .catch((err) => {
           setIsSigning(false);
-          setUsernameErr(err.message);
+          setOtherErr(err.message);
         });
     }
   };
@@ -115,6 +120,7 @@ const SignUp = () => {
           onChange={confirmPassword}
         />
         {passwordErr && <p>{passwordErr}</p>}
+        {otherErr && <p>{otherErr}</p>}
         {!isSigning && <button>SIGN UP</button>}
         {isSigning && <button disabled>SIGNING...</button>}
       </form>
