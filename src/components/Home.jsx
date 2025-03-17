@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import fetchURL from "../fetchURL";
+import PropTypes, { func } from "prop-types";
 
-const Home = () => {
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
+const Home = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null);
 
@@ -11,7 +11,7 @@ const Home = () => {
 
     //FETCH POSTS
     if (!token) {
-      setUserLoggedIn(false);
+      props.toggleLogIn(false);
       setIsLoading(false);
     } else {
       fetch(fetchURL + "/user", {
@@ -21,15 +21,21 @@ const Home = () => {
       })
         .then((response) => {
           if (response.ok) return response.json();
-          else throw new Error("Not logged in");
+          else throw new Error("Server error");
         })
         .then((data) => {
-          setUserName(data.username);
-          setUserLoggedIn(true);
+          if (data.username) {
+            setUserName(data.username);
+            props.toggleLogIn(true);
+          }else {
+            props.toggleLogIn(false);
+            window.localStorage.removeItem("token");
+          }
           setIsLoading(false);
         })
         .catch((err) => {
-          setUserLoggedIn(false);
+          console.log(err);
+          props.toggleLogIn(false);
           setIsLoading(false);
         });
     }
@@ -41,10 +47,16 @@ const Home = () => {
     return (
       <div>
         <h1>THIS IS HOMEPAGE</h1>
-        {userLoggedIn ? <p>HELLO, {userName}</p> : <p>YOU ARE NOT LOGGED IN</p>}
+        {props.userLoggedIn ? <p>HELLO, {userName}</p> : <p>YOU ARE NOT LOGGED IN</p>}
       </div>
     );
   }
 };
+
+Home.propTypes = {
+  userLoggedIn: PropTypes.bool,
+  toggleLogIn: PropTypes.func
+
+}
 
 export default Home;

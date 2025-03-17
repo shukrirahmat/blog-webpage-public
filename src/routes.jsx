@@ -1,17 +1,11 @@
 import App from './App.jsx'
-import Home from './components/Home.jsx'
-import LogIn from './components/LogIn.jsx'
-import SignUp from './components/SignUp.jsx'
+import ErrorPage from './components/ErrorPage.jsx';
 
 const routes = [
   {
-    path: "/",
+    path: "/:name?",
     element: <App />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: "log-in", element: <LogIn /> },
-      { path: "sign-up", element: <SignUp /> },
-    ],
+    errorElement: <ErrorPage />,
   },
 ];
 
