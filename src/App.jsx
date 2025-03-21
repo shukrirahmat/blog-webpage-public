@@ -1,19 +1,15 @@
-import { Link, useParams, useNavigate} from "react-router-dom";
+import { Link, Outlet, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
-import Home from "./components/Home.jsx";
-import LogIn from "./components/LogIn.jsx";
-import SignUp from "./components/SignUp.jsx";
-import ErrorPage from "./components/ErrorPage.jsx";
 import fetchURL from "./fetchURL.jsx";
 
 
 function App() {
-  const { name } = useParams();
   const navigate = useNavigate();
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null);
+  
 
   const toggleLogIn = (state) => {
     setUserLoggedIn(state);
@@ -75,17 +71,7 @@ function App() {
         {userLoggedIn && !isLoading && <button onClick={handleLogOut}>LOG OUT</button>}
       </nav>
       <hr></hr>
-      { isLoading === true ? (
-        <p>Loading page...</p>
-      ) : name === "sign-up" ? (
-        <SignUp />
-      ) : name === "log-in" ? (
-        <LogIn />
-      ) : !name ? (
-        <Home/>
-      ) : (
-        <ErrorPage/>
-      )}
+      <Outlet context={userLoggedIn}/>
     </>
   );
 }
