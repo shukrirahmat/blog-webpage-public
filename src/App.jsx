@@ -1,7 +1,6 @@
-import { Link, Outlet, useNavigate} from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import fetchURL from "./fetchURL.jsx";
-
 
 function App() {
   const navigate = useNavigate();
@@ -9,7 +8,6 @@ function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null);
-  
 
   const toggleLogIn = (state) => {
     setUserLoggedIn(state);
@@ -39,17 +37,12 @@ function App() {
           else throw new Error("Server error");
         })
         .then((data) => {
-          if (data.username) {
-            setUserName(data.username);
-            toggleLogIn(true);
-          }else {
-            toggleLogIn(false);
-            window.localStorage.removeItem("token");
-          }
+          setUserName(data.username);
+          toggleLogIn(true);
           setIsLoading(false);
         })
         .catch((err) => {
-          console.log(err);
+          window.localStorage.removeItem("token");
           toggleLogIn(false);
           setIsLoading(false);
         });
@@ -62,16 +55,18 @@ function App() {
         <Link to="/">
           <h1>MY BLOG</h1>
         </Link>
-        {userLoggedIn && !isLoading && <p>HELLO, {userName}</p> }
+        {userLoggedIn && !isLoading && <p>HELLO, {userName}</p>}
         <p></p>
         {!userLoggedIn && !isLoading && <Link to="/log-in">LOG IN</Link>}
         <p></p>
         {!userLoggedIn && !isLoading && <Link to="/sign-up">SIGN UP</Link>}
         <p></p>
-        {userLoggedIn && !isLoading && <button onClick={handleLogOut}>LOG OUT</button>}
+        {userLoggedIn && !isLoading && (
+          <button onClick={handleLogOut}>LOG OUT</button>
+        )}
       </nav>
       <hr></hr>
-      <Outlet context={userLoggedIn}/>
+      <Outlet context={userLoggedIn} />
     </>
   );
 }
