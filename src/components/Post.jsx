@@ -12,7 +12,8 @@ const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
-  const [comment, setComment] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
   const [isAddingComment, setIsAddingComment] = useState(false);
 
   const { postId } = useParams();
@@ -20,14 +21,13 @@ const Post = () => {
   const navigate = useNavigate();
 
   const handleComment = (e) => {
-    setComment(e.target.value);
+    setCommentText(e.target.value);
   };
 
   const submitComment = (e) => {
     e.preventDefault();
-    if (comment.length > 0) {
+    if (commentText.length > 0) {
       const token = window.localStorage.getItem("token");
-      
 
       if (!token) {
         navigate("/log-in");
@@ -42,19 +42,27 @@ const Post = () => {
             Authorization: `Bearer ${token}`,
           },
           body: new URLSearchParams({
-            content: comment,
+            content: commentText,
           }),
-        }).then((response) => {
-          if (response.ok) return response.json();
-          else throw new Error("Server error");
-        }).then((data) => {
-            navigate(0);
-        }).catch((err) => {
+        })
+          .then((response) => {
+            if (response.ok) return response.json();
+            else throw new Error("Server error");
+          })
+          .then((data) => {
+            console.log(data);
+            let newComments = comments.slice();
+            newComments.push(data);
+            setComments(newComments);
+            setIsAddingComment(false);
+            setCommentText("");
+          })
+          .catch((err) => {
             navigate("/log-in");
             navigate(0);
-        })
-        setIsAddingComment(false);
-
+            setIsAddingComment(false);
+          });
+        
       }
     }
   };
@@ -75,6 +83,7 @@ const Post = () => {
       })
       .then((data) => {
         setPost(data);
+        setComments(data.comments);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -97,10 +106,10 @@ const Post = () => {
           </h5>
           <p>{post.content}</p>
         </div>
-        <Comments postId={postId} userLoggedIn={userLoggedIn}/>
+        <Comments postId={postId} userLoggedIn={userLoggedIn} />
 
         <ul>
-          {post.comments.map((comment) => {
+          {comments.map((comment) => {
             return (
               <li key={comment.id}>
                 <h5>
@@ -124,7 +133,7 @@ const Post = () => {
                   name="comment"
                   placeholder="Enter comment..."
                   onChange={handleComment}
-                  value={comment}
+                  value={commentText}
                 ></textarea>
                 {!isAddingComment && <button>COMMENT</button>}
                 {isAddingComment && <button disabled>ADDING COMMENT...</button>}
@@ -135,6 +144,6 @@ const Post = () => {
       </>
     );
   }
-}
+};
 
 export default Post;
