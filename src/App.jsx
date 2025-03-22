@@ -5,7 +5,7 @@ import fetchURL from "./fetchURL.jsx";
 function App() {
   const navigate = useNavigate();
 
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null);
 

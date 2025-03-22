@@ -6,7 +6,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import fetchURL from "../fetchURL";
-import Comments from "./Comments";
 
 const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -106,7 +105,6 @@ const Post = () => {
           </h5>
           <p>{post.content}</p>
         </div>
-        <Comments postId={postId} userLoggedIn={userLoggedIn} />
 
         <ul>
           {comments.map((comment) => {
@@ -119,14 +117,14 @@ const Post = () => {
               </li>
             );
           })}
-          {!userLoggedIn && (
+          {userLoggedIn === false && (
             <li>
               <p>
                 PLEASE <Link to={`/log-in`}>LOG IN</Link> TO COMMENT
               </p>
             </li>
           )}
-          {userLoggedIn && (
+          {userLoggedIn === true && (
             <li>
               <form onSubmit={submitComment}>
                 <textarea
