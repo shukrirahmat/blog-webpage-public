@@ -6,8 +6,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import fetchURL from "../fetchURL";
+import Comments from "./Comments";
 
-function Post() {
+const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
@@ -24,7 +25,6 @@ function Post() {
 
   const submitComment = (e) => {
     e.preventDefault();
-    setIsAddingComment(true);
     if (comment.length > 0) {
       const token = window.localStorage.getItem("token");
       
@@ -33,6 +33,7 @@ function Post() {
         navigate("/log-in");
         navigate(0);
       } else {
+        setIsAddingComment(true);
         fetch(fetchURL + "/posts/" + postId + "/comments", {
           mode: "cors",
           method: "POST",
@@ -47,15 +48,15 @@ function Post() {
           if (response.ok) return response.json();
           else throw new Error("Server error");
         }).then((data) => {
-            navigate(0)
+            navigate(0);
         }).catch((err) => {
             navigate("/log-in");
             navigate(0);
         })
+        setIsAddingComment(false);
 
       }
     }
-    setIsAddingComment(false);
   };
 
   useEffect(() => {
@@ -96,6 +97,8 @@ function Post() {
           </h5>
           <p>{post.content}</p>
         </div>
+        <Comments postId={postId} userLoggedIn={userLoggedIn}/>
+
         <ul>
           {post.comments.map((comment) => {
             return (
