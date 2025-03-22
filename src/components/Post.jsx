@@ -49,7 +49,6 @@ const Post = () => {
             else throw new Error("Server error");
           })
           .then((data) => {
-            console.log(data);
             let newComments = comments.slice();
             newComments.push(data);
             setComments(newComments);
