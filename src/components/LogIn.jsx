@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate, useOutletContext} from "react-router-dom";
 import fetchURL from "../fetchURL";
 
 const LogIn = () => {
+  const userLoggedIn = useOutletContext();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -26,6 +27,8 @@ const LogIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setUsernameErr("");
+    setPasswordErr("");
 
     if (username.length < 1 || password.length < 1) {
       if (username.length < 1) {
@@ -72,6 +75,10 @@ const LogIn = () => {
         });
     }
   };
+
+  if (userLoggedIn) {
+    return <Navigate to="/"/>
+  }
 
   return (
     <div>

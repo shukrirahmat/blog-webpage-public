@@ -10,6 +10,7 @@ import fetchURL from "../fetchURL";
 const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [commentError, setCommentError] = useState(null);
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -25,6 +26,7 @@ const Post = () => {
 
   const submitComment = (e) => {
     e.preventDefault();
+    setError(null);
     if (commentText.length > 0) {
       const token = window.localStorage.getItem("token");
 
@@ -46,7 +48,8 @@ const Post = () => {
         })
           .then((response) => {
             if (response.ok) return response.json();
-            else throw new Error("Server error");
+            else if (response.status === 401) throw new Error("Unverified");
+            else throw new Error("Unable to add comment. Server Error");
           })
           .then((data) => {
             let newComments = comments.slice();
@@ -56,9 +59,15 @@ const Post = () => {
             setCommentText("");
           })
           .catch((err) => {
-            navigate("/log-in");
-            navigate(0);
+            if (err.message === "Unverified") {
+              navigate("/log-in");
+              navigate(0);
+            } else {
+              setCommentError(err.message);
+              setCommentText("");
+            }
             setIsAddingComment(false);
+            
           });
         
       }
@@ -137,6 +146,7 @@ const Post = () => {
               </form>
             </li>
           )}
+          {commentError && <p>{commentError}</p>}
         </ul>
       </>
     );

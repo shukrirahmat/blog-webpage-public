@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate, useOutletContext} from "react-router-dom";
 import fetchURL from "../fetchURL";
 
 const SignUp = () => {
+  const userLoggedIn = useOutletContext();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -89,6 +90,10 @@ const SignUp = () => {
         });
     }
   };
+
+  if (userLoggedIn) {
+    return <Navigate to="/"/>
+  }
 
   return (
     <div>

@@ -17,7 +17,7 @@ const Home = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Server Error");
+          throw new Error("Unable to load posts. Server Error");
         }
         return response.json();
       })
