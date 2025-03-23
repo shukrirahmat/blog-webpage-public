@@ -1,6 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import fetchURL from "./fetchURL.jsx";
+import styles from './App.module.css';
 
 function App() {
   const navigate = useNavigate();
@@ -50,24 +51,23 @@ function App() {
   }, []);
 
   return (
-    <>
-      <nav className="navbar">
-        <Link to="/">
-          <h1>MY BLOG</h1>
+    <div className={styles.app}>
+      <nav className={styles.navbar}>
+        <Link to="/" className={styles.logo}>
+          <h1>THE BLOG</h1>
         </Link>
-        {userLoggedIn && !isLoading && <p>HELLO, {userName}</p>}
-        <p></p>
+        <div className={styles.navbtnContainer}>
+        {userLoggedIn && !isLoading && <p>Hello, {userName}</p>}
         {!userLoggedIn && !isLoading && <Link to="/log-in">LOG IN</Link>}
-        <p></p>
         {!userLoggedIn && !isLoading && <Link to="/sign-up">SIGN UP</Link>}
-        <p></p>
         {userLoggedIn && !isLoading && (
           <button onClick={handleLogOut}>LOG OUT</button>
         )}
+        </div>
       </nav>
       <hr></hr>
       <Outlet context={userLoggedIn} />
-    </>
+    </div>
   );
 }
 
