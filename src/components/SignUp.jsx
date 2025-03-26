@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate, Navigate, useOutletContext} from "react-router-dom";
+import { useNavigate, Navigate, useOutletContext } from "react-router-dom";
 import fetchURL from "../fetchURL";
+import styles from "../styles/SignUp.module.css";
 
 const SignUp = () => {
   const userLoggedIn = useOutletContext();
@@ -12,13 +13,19 @@ const SignUp = () => {
   const [usernameErr, setUsernameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [isSigning, setIsSigning] = useState(false);
-  const [otherErr, setOtherErr] = useState("")
+  const [otherErr, setOtherErr] = useState("");
+
+  const isFirstCharALetter = (string) => {
+    return isNaN(string.charAt(0)) && string.charAt(0) !== "_";
+  };
 
   const editUsername = (e) => {
     const newname = e.target.value;
     setUsername(newname);
     if (newname.length > 0 && !newname.match("^[a-zA-Z0-9_]+$")) {
       setUsernameErr("Only letters, numbers and underscores are allowed");
+    } else if (newname.length > 0 && !isFirstCharALetter(newname)) {
+      setUsernameErr("First character should be a letter");
     } else {
       setUsernameErr("");
     }
@@ -29,6 +36,8 @@ const SignUp = () => {
     setPassword(newpassword);
     if (newpassword !== password2) {
       setPasswordErr("Password did not match");
+    } else if (newpassword.length > 0 && newpassword.length < 6) {
+      setPasswordErr("Password should have 6 characters minimum");
     } else {
       setPasswordErr("");
     }
@@ -39,6 +48,8 @@ const SignUp = () => {
     setPassword2(newpassword);
     if (newpassword !== password) {
       setPasswordErr("Password did not match");
+    } else if (newpassword.length > 0 && newpassword.length < 6) {
+      setPasswordErr("Password should have 6 characters minimum");
     } else {
       setPasswordErr("");
     }
@@ -55,7 +66,12 @@ const SignUp = () => {
       if (password.length < 1 && password2.length < 1) {
         setPasswordErr("Password is required");
       }
-    } else if (!username.match("^[a-zA-Z0-9_]+$") || password !== password2) {
+    } else if (
+      !username.match("^[a-zA-Z0-9_]+$") ||
+      !isFirstCharALetter(username) ||
+      password !== password2 ||
+      password.length < 6
+    ) {
       // Do nothing, sign in failed
     } else {
       setIsSigning(true);
@@ -92,13 +108,13 @@ const SignUp = () => {
   };
 
   if (userLoggedIn) {
-    return <Navigate to="/"/>
+    return <Navigate to="/" />;
   }
 
   return (
-    <div>
-      <h1>THIS IS SIGN UP PAGE</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.base}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.username}>
         <label htmlFor="username">USERNAME</label>
         <input
           type="text"
@@ -107,15 +123,20 @@ const SignUp = () => {
           value={username}
           onChange={editUsername}
         />
-        {usernameErr && <p>{usernameErr}</p>}
+        {usernameErr && <p className={styles.errorMsg}>{usernameErr}</p>}
+        </div>
+        <div className={styles.pw1}>
         <label htmlFor="password">PASSWORD</label>
         <input
           type="password"
           name="password"
           id="password"
           value={password}
-          onChange={editPassword}
+          onChange={editPassword}        
         />
+        {passwordErr && <p className={styles.errorMsg}>{passwordErr}</p>}
+        </div>
+        <div className={styles.pw2}>
         <label htmlFor="password2">CONFIRM PASSWORD</label>
         <input
           type="password"
@@ -124,10 +145,13 @@ const SignUp = () => {
           value={password2}
           onChange={confirmPassword}
         />
-        {passwordErr && <p>{passwordErr}</p>}
-        {otherErr && <p>{otherErr}</p>}
-        {!isSigning && <button>SIGN UP</button>}
+        {passwordErr && <p className={styles.errorMsg}>{passwordErr}</p>}
+        </div>       
+        <div className={styles.submitBtn}>
+        {!isSigning && <button class={styles.activeBtn}>SIGN UP</button>}
         {isSigning && <button disabled>SIGNING...</button>}
+        {otherErr && <p className={styles.errorMsg}>{otherErr}</p>}
+        </div>
       </form>
     </div>
   );
