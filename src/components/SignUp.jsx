@@ -14,6 +14,7 @@ const SignUp = () => {
   const [passwordErr, setPasswordErr] = useState("");
   const [isSigning, setIsSigning] = useState(false);
   const [otherErr, setOtherErr] = useState("");
+  const [isFinished, setIsFinished] = useState(false);
 
   const isFirstCharALetter = (string) => {
     return isNaN(string.charAt(0)) && string.charAt(0) !== "_";
@@ -97,7 +98,7 @@ const SignUp = () => {
             setUsernameErr(data.error);
           } else {
             setIsSigning(false);
-            navigate("/");
+            setIsFinished(true);
           }
         })
         .catch((err) => {
@@ -109,6 +110,12 @@ const SignUp = () => {
 
   if (userLoggedIn) {
     return <Navigate to="/" />;
+  }
+
+  if (isFinished) {
+    return (<div className={styles.base}>
+      <p className={styles.successMsg}>Sign up successful. You can now log in with username "{username}"</p>
+    </div>)
   }
 
   return (
@@ -149,7 +156,7 @@ const SignUp = () => {
         </div>       
         <div className={styles.submitBtn}>
         {!isSigning && <button class={styles.activeBtn}>SIGN UP</button>}
-        {isSigning && <button disabled>SIGNING...</button>}
+        {isSigning && <button disabled>SIGNING UP...</button>}
         {otherErr && <p className={styles.errorMsg}>{otherErr}</p>}
         </div>
       </form>

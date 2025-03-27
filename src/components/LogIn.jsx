@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Navigate, useOutletContext} from "react-router-dom";
 import fetchURL from "../fetchURL";
+import styles from "../styles/LogIn.module.css";
 
 const LogIn = () => {
   const userLoggedIn = useOutletContext();
@@ -81,9 +82,9 @@ const LogIn = () => {
   }
 
   return (
-    <div>
-      <h1>THIS IS LOG IN PAGE</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.base}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.username}>
         <label htmlFor="username">USERNAME</label>
         <input
           type="text"
@@ -92,7 +93,9 @@ const LogIn = () => {
           value={username}
           onChange={editUsername}
         />
-        {usernameErr && <p>{usernameErr}</p>}
+        {usernameErr && <p className={styles.errorMsg}>{usernameErr}</p>}
+        </div>
+        <div className={styles.password}>
         <label htmlFor="password">PASSWORD</label>
         <input
           type="password"
@@ -101,10 +104,13 @@ const LogIn = () => {
           value={password}
           onChange={editPassword}
         />
-        {passwordErr && <p>{passwordErr}</p>}
-        {otherErr && <p>{otherErr}</p>}
+        {passwordErr && <p className={styles.errorMsg}>{passwordErr}</p>}
+        </div>
+        <div className={styles.submitBtn}>
+        {otherErr && <p className={styles.errorMsg}>{otherErr}</p>}
         {!isLogging && <button>LOG IN</button>}
-        {isLogging && <button disabled>Logging in...</button>}
+        {isLogging && <button disabled>LOGGING IN...</button>}
+        </div>
       </form>
     </div>
   );

@@ -35,12 +35,12 @@
     padding: 2px 5px;
 }
 
-.username {
+.username, .password, .submitBtn {
     position: relative;
 }
 
-.pw1, .pw2 {
-    position: relative;
+.submitBtn {
+    margin-top: 15px;
 }
 
 .errorMsg {
@@ -49,11 +49,6 @@
     font-size: 12px;
     bottom: -20px;
     color: red;
-}
-
-.submitBtn {
-    position: relative;
-    margin-top: 15px;
 }
 
 .submitBtn button {
@@ -71,10 +66,4 @@
 
 .submitBtn button:disabled {
     background-color: rgba(50, 164, 255, 0.6);
-}
-
-.successMsg {
-    color: white;
-    font-family: "DM Sans", sans-serif;
-    font-size: 18px;
 }

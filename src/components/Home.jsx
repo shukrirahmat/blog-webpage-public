@@ -34,7 +34,7 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <p className={styles.message}>Loading Posts...</p>;
+    return <p className={styles.message}>Loading Posts... <span>(It'll take longer first time because the server is asleep)</span></p>;
   } else if (error) {
     return <p className={styles.message}>{error}</p>;
   } else {
@@ -45,8 +45,8 @@ const Home = () => {
           {posts.map((post) => {
             if (post.published) {
               return (
-                <Link to={`/posts/${post.id}`}>
-                <li key={post.id} className={styles.post}>
+                <Link to={`/posts/${post.id}`} key={post.id}>
+                <li className={styles.post}>
                   <div className={styles.postTitle}>
                       <h3>{post.title}</h3>
                     <p>
