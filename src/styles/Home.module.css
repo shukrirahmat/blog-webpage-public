@@ -60,14 +60,11 @@
 }
 
 .postTitle {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    gap: 10px;
     font-family: "DM Sans Bold", sans-serif;
+    font-size: 24px;
 }
 
-.postTitle p {
+.postTitle span {
     font-family: "DM Sans", sans-serif;
     font-size: 14px;
 }

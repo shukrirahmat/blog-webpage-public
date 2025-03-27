@@ -6,6 +6,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 import fetchURL from "../fetchURL";
+import { format } from "date-fns";
+import styles from "../styles/Post.module.css";
 
 const Post = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,9 +69,7 @@ const Post = () => {
               setCommentText("");
             }
             setIsAddingComment(false);
-            
           });
-        
       }
     }
   };
@@ -105,23 +105,27 @@ const Post = () => {
     return <p>{error}</p>;
   } else {
     return (
-      <>
-        <div>
-          <h3>{post.title}</h3>
-          <h5>
-            by {post.authorUsername} on {post.datePosted}
-          </h5>
-          <p>{post.content}</p>
+      <div className={styles.base}>
+        <div className={styles.post}>
+          <div className={styles.postTitle}>
+            {post.title}{" "}
+            <span>
+              by <b>{post.authorUsername}</b> on {format(post.datePosted, "Pp")}
+            </span>
+          </div>
+          <hr></hr>
+          <p className={styles.content}>{post.content}</p>
         </div>
 
-        <ul>
+        <ul className={styles.comments}>
           {comments.map((comment) => {
             return (
-              <li key={comment.id}>
-                <h5>
-                  {comment.writerUsername} on {comment.dateWritten}
-                </h5>
-                <p>{comment.content}</p>
+              <li key={comment.id} className={styles.comment}>
+                <p className={styles.writer}>
+                  {comment.writerUsername} <span>commented on {format(post.datePosted, "Pp")}:</span>
+                </p>
+                <hr></hr>
+                <p className={styles.commentText}>{comment.content}</p>
               </li>
             );
           })}
@@ -148,7 +152,7 @@ const Post = () => {
           )}
           {commentError && <p>{commentError}</p>}
         </ul>
-      </>
+      </div>
     );
   }
 };

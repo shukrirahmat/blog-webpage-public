@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import fetchURL from "../fetchURL";
 import { Link } from "react-router-dom";
 import styles from "../styles/Home.module.css";
-import {format} from "date-fns";
+import { format } from "date-fns";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,36 +34,42 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <p className={styles.message}>Loading Posts... <span>(It'll take longer first time because the server is asleep)</span></p>;
+    return (
+      <p className={styles.message}>
+        Loading Posts...{" "}
+        <span>(It'll take longer first time because the server is asleep)</span>
+      </p>
+    );
   } else if (error) {
     return <p className={styles.message}>{error}</p>;
   } else {
     return (
       <div className={styles.home}>
         <div className={styles.leftbox}>
-        <ul className={styles.postsContainer}>
-          {posts.map((post) => {
-            if (post.published) {
-              return (
-                <Link to={`/posts/${post.id}`} key={post.id}>
-                <li className={styles.post}>
-                  <div className={styles.postTitle}>
-                      <h3>{post.title}</h3>
-                    <p>
-                      by <b>{post.authorUsername}</b> on {format(post.datePosted, 'Pp')}
-                    </p>
-                  </div>
-                  <hr></hr>
-                  <p className={styles.content}>{post.content}</p>
-                </li>
-                </Link>
-              );
-            }
-          })}
-        </ul>
+          <ul className={styles.postsContainer}>
+            {posts.map((post) => {
+              if (post.published) {
+                return (
+                  <Link to={`/posts/${post.id}`} key={post.id}>
+                    <li className={styles.post}>
+                      <div className={styles.postTitle}>
+                          {post.title}{" "}
+                          <span>
+                            by <b>{post.authorUsername}</b> on{" "}
+                            {format(post.datePosted, "Pp")}
+                          </span>
+                      </div>
+                      <hr></hr>
+                      <p className={styles.content}>{post.content}</p>
+                    </li>
+                  </Link>
+                );
+              }
+            })}
+          </ul>
         </div>
         <div className={styles.rightbox}>
-        {posts.map((post) => {
+          {posts.map((post) => {
             if (post.published) {
               return (
                 <Link to={`/posts/${post.id}`} key={post.id}>
@@ -72,7 +78,6 @@ const Home = () => {
               );
             }
           })}
-          
         </div>
       </div>
     );
