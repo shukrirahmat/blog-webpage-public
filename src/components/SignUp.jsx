@@ -155,7 +155,7 @@ const SignUp = () => {
         {passwordErr && <p className={styles.errorMsg}>{passwordErr}</p>}
         </div>       
         <div className={styles.submitBtn}>
-        {!isSigning && <button class={styles.activeBtn}>SIGN UP</button>}
+        {!isSigning && <button className={styles.activeBtn}>SIGN UP</button>}
         {isSigning && <button disabled>SIGNING UP...</button>}
         {otherErr && <p className={styles.errorMsg}>{otherErr}</p>}
         </div>

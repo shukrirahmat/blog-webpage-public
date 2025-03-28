@@ -100,9 +100,9 @@ const Post = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading Posts...</p>;
+    return <p className={styles.message}>Loading Posts...</p>;
   } else if (error) {
-    return <p>{error}</p>;
+    return <p className={styles.message}>{error}</p>;
   } else {
     return (
       <div className={styles.base}>
@@ -130,14 +130,14 @@ const Post = () => {
             );
           })}
           {userLoggedIn === false && (
-            <li>
+            <li className={styles.logInMessage}>
               <p>
-                PLEASE <Link to={`/log-in`}>LOG IN</Link> TO COMMENT
+                <Link to={`/log-in`}>LOG IN</Link> TO COMMENT
               </p>
             </li>
           )}
           {userLoggedIn === true && (
-            <li>
+            <li className={styles.newMessage}>
               <form onSubmit={submitComment}>
                 <textarea
                   name="comment"
@@ -150,7 +150,7 @@ const Post = () => {
               </form>
             </li>
           )}
-          {commentError && <p>{commentError}</p>}
+          {commentError && <li className={styles.commentError}><p>{commentError}</p></li>}
         </ul>
       </div>
     );

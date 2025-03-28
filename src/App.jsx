@@ -1,7 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import fetchURL from "./fetchURL.jsx";
-import styles from './App.module.css';
+import styles from "./App.module.css";
 
 function App() {
   const navigate = useNavigate();
@@ -57,16 +57,18 @@ function App() {
           <h1>THE BLOG</h1>
         </Link>
         <div className={styles.navbtnContainer}>
-        {userLoggedIn && !isLoading && <p>Hello, {userName}</p>}
-        {!userLoggedIn && !isLoading && <Link to="/log-in">LOG IN</Link>}
-        {!userLoggedIn && !isLoading && <Link to="/sign-up">SIGN UP</Link>}
-        {userLoggedIn && !isLoading && (
-          <button onClick={handleLogOut}>LOG OUT</button>
-        )}
+          {userLoggedIn && !isLoading && <p>Hello, {userName}</p>}
+          {!userLoggedIn && !isLoading && <Link to="/log-in">LOG IN</Link>}
+          {!userLoggedIn && !isLoading && <Link to="/sign-up">SIGN UP</Link>}
+          {userLoggedIn && !isLoading && (
+            <button onClick={handleLogOut}>LOG OUT</button>
+          )}
         </div>
       </nav>
-      <hr></hr>
       <Outlet context={userLoggedIn} />
+      <div className={styles.footer}>
+        <p>© shkrrhmt 2025</p>
+      </div>
     </div>
   );
 }

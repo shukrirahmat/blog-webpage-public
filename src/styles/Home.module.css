@@ -48,7 +48,7 @@
     padding: 25px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-family: "DM Sans", sans-serif;
-    max-height: 14em;
+    max-height: 15em;
     display: flex;
     flex-direction: column;
     gap: 5px;
